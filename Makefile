@@ -8,13 +8,19 @@ build:
 	$(DC) build
 
 up:
-	$(DC) up -d
+	$(DC) up
 
 down:
 	$(DC) down
 
+down-v:
+	$(DC) down -v
+
 shell:
 	$(DC) run --rm $(APP) sh
+
+django_shell:
+	$(DC) run --rm $(APP) python manage.py shell_plus
 
 wait_for_db:
 	$(DC) run --rm $(APP) python manage.py wait_for_db

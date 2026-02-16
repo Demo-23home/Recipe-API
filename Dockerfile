@@ -1,4 +1,4 @@
-FROM python:3.9-alpine3.13
+FROM python:3.10-alpine3.17
 
 LABEL maintainer="demo-23home"
 
@@ -16,7 +16,10 @@ COPY ./app /app
 
 EXPOSE 8000
 
+
+# Set build argument
 ARG DEV=false
+
 # Create virtual environment and install dependencies
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
@@ -24,15 +27,14 @@ RUN python -m venv /py && \
     apk add --update --no-cache --virtual .tmp-build-deps \
         build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
-    if [ $DEV = "true" ]; \
-        then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
+    if [ "$DEV" = "true" ]; then \
+        /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     rm -rf /tmp && \
     apk del .tmp-build-deps && \
-    adduser \
-        --disabled-password \
-        --no-create-home \ 
-        django-user
+    adduser --disabled-password --no-create-home django-user
+
+
 
 # Add venv to PATH
 ENV PATH="/py/bin:$PATH"
@@ -42,4 +44,3 @@ USER django-user
 
 
 
-    

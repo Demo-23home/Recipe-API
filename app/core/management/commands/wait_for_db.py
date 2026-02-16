@@ -11,24 +11,18 @@ from django.db.utils import OperationalError
 
 
 class Command(BaseCommand):
-    """
-    Django command to wait for DB
-    """
+    help = "Wait for database to be available"
 
     def handle(self, *args, **options):
-        """
-        Entry Point for command.
-        """
         self.stdout.write("Waiting for database...")
-
         db_up = False
-
-        while db_up is False:
+        while not db_up:
             try:
                 self.check(databases=["default"])
                 db_up = True
             except (OperationalError, Psycopg2OpError):
                 self.stdout.write("Database unavailable, waiting 1 second...")
                 time.sleep(1)
-
+        # Optional small pause to ensure DB is fully ready
+        time.sleep(2)
         self.stdout.write(self.style.SUCCESS("Database available!"))
