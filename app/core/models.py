@@ -18,7 +18,8 @@ class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
         """
-        Helper method to create and save a User with the given email and password.
+        Helper method to create and save a User
+        with the given email and password.
         """
         if not email:
             raise ValueError("User must have an email address.")
@@ -50,6 +51,7 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
