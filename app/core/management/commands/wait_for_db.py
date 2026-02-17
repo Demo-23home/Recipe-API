@@ -4,7 +4,7 @@ Django command to make sure PostgreSQL is available.
 
 import time
 
-from psycopg2 import OperationalError as Psycopg2OpError
+from psycopg import OperationalError as PsycopgOpError
 
 from django.core.management.base import BaseCommand
 from django.db.utils import OperationalError
@@ -20,7 +20,7 @@ class Command(BaseCommand):
             try:
                 self.check(databases=["default"])
                 db_up = True
-            except (OperationalError, Psycopg2OpError):
+            except (OperationalError, PsycopgOpError):
                 self.stdout.write("Database unavailable, waiting 1 second...")
                 time.sleep(1)
         # Optional small pause to ensure DB is fully ready

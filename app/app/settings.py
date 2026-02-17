@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1", "172.22.0.3"]
 # Application definition
 
 DJANGO_APPS = [
+    "jazzmin",  # MUST come before admin
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
