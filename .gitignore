@@ -1,6 +1,7 @@
 staticfiles/
 .envs/*
 !.envs/.env.example
+.env
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
