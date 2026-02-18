@@ -1,16 +1,40 @@
-#GIT 
-.git 
-.gitignore 
+# -----------------------------
+# Git
+# -----------------------------
+.git
+.gitignore
 
-#Docker 
-.docker 
+# -----------------------------
+# Docker
+# -----------------------------
+docker-compose.yml
+Dockerfile
+.docker
 
-#Python
-app/__pycache__/
-app/*/__pycache__/
-app/*/*/__pycache__/
-app/*/*/*/__pycache__/
+# -----------------------------
+# Python
+# -----------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 
-.env/
+# Virtual environments
 .venv/
 venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Static build artifacts
+staticfiles/
+
+# Environment files (DO NOT COPY INTO IMAGE)
+.env
+.env.*
+.envs/
