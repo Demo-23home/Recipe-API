@@ -41,7 +41,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "django_extensions"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "django_extensions",
+    "drf_spectacular",
+]
 
 LOCAL_APPS = ["core.apps.CoreConfig"]
 
@@ -138,3 +142,8 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "core.user"
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
+}

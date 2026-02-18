@@ -4,3 +4,4 @@ black>=24.0
 ipython>=8.0
 bpython>=0.25
 Werkzeug>=3.0
+drf-spectacular==0.29.0
