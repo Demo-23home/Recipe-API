@@ -10,6 +10,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 CREATE_USER_URL = reverse("users:create-user")
+TOKEN_URL = reverse("users:token")
 
 
 def create_user(**params):
@@ -84,4 +85,46 @@ class PublicAPIUserTests(TestCase):
 
         self.assertFalse(user_exists)
 
+    def test_create_token_for_user(self):
+        """
+        Testing if a token is generated when user is logged in.
+        """
 
+        user_data = {
+            "email": "testemail@example.com",
+            "password": "testPassword@123",
+            "name": "Test User",
+        }
+
+        create_user(**user_data)
+
+        payload = {"email": user_data["email"], "password": user_data["password"]}
+
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertIn("token", res.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_create_token_bad_credentials(self):
+        """
+        Testing no token is generated if credentials were incorrect.
+        """
+
+        create_user(email="testeamil@example.com", password="TestPassword@123")
+
+        payload = {"email": "notAnEmail", "password": "notAPssword"}
+
+        res = self.client.post(TOKEN_URL, payload)
+        self.assertNotIn("token", res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_blank_password(self):
+        """
+        Testing post a blank password returns an error.
+        """
+
+        payload = {"email": "testemail@example.com", "password": ""}
+
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
