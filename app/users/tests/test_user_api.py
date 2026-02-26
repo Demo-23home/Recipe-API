@@ -160,14 +160,15 @@ class PrivateUserAPITests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertIn(res.data, {"email": self.user.email, "name": self.user.name})
+        self.assertEqual(res.data, {"email": self.user.email, "name": self.user.name})
+        self.assertNotIn("password", res.data)
 
     def test_post_me_not_allowed(self):
         """
         Test POST method isn't allowed with me endpoint.
         """
 
-        res = self.client.get(ME_URL)
+        res = self.client.post(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
