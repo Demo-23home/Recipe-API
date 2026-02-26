@@ -16,7 +16,7 @@ def create_user(**params):
     """
     Create and return a new user.
     """
-    return get_user_model().objects.create(**params)
+    return get_user_model().objects.create_user(**params)
 
 
 class PublicAPIUserTests(TestCase):
@@ -34,9 +34,9 @@ class PublicAPIUserTests(TestCase):
         """
 
         payload = {
-            "username": "testUser",
+            "name": "Test User",
             "password": "TestPassword@123",
-            "email": "testUser@example.com",
+            "email": "testuser@example.com",
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
@@ -55,9 +55,9 @@ class PublicAPIUserTests(TestCase):
         """
 
         payload = {
-            "username": "testUser",
+            "name": "Test User",
             "password": "TestPassword@123",
-            "email": "testUser@example.com",
+            "email": "testser@example.com",
         }
 
         create_user(**payload)
@@ -71,9 +71,9 @@ class PublicAPIUserTests(TestCase):
         Test error returned if user password is too short.
         """
         payload = {
-            "username": "testUser",
+            "name": "Test User",
             "password": "123",
-            "email": "testUser@example.com",
+            "email": "testuser@example.com",
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
