@@ -28,4 +28,5 @@ urlpatterns = [
     path("api/docs/", SpectacularSwaggerView.as_view(), name="api-docs"),
     path("api/redoc/", SpectacularRedocView.as_view(), name="api-redoc"),
     path("api/users/", include("users.urls")),
+    path("api/recipe/", include("recipe.urls")),
 ]
