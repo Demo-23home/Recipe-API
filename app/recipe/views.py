@@ -9,11 +9,13 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import Recipe
 from recipe import serializers
 
+
 class RecipeViewSet(viewsets.ModelViewSet):
     """
     Viewsets to manage recipe API's
     """
-    serializer_class = serializers.RecipeSerializer
+
+    serializer_class = serializers.RecipeDetailSerializer
     authentication_classes = [TokenAuthentication]
     queryset = Recipe.objects.all()
     permission_classes = [IsAuthenticated]
@@ -24,3 +26,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         recipes = self.queryset.filter(user=self.request.user).order_by("-id")
         return recipes
+
+    def get_serializer_class(self, *args, **kwargs):
+        """
+        Return serializer based on the request.
+        """
+        if self.action == "list":
+            return serializers.RecipeSerializer
+
+        return self.serializer_class
