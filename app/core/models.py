@@ -83,8 +83,8 @@ class Recipe(models.Model):
     title = models.CharField(_("Title"), max_length=50)
     description = models.TextField(_("Description"), blank=True)
     time_minutes = models.IntegerField(_("Time to make"))
-    price = models.DecimalField(_("Price"), max_digits=5, decimal_places=2)
-    link = models.CharField(_("Link"), max_length=50, blank=True)
+    price = models.DecimalField(_("Price"), max_digits=6, decimal_places=2)
+    link = models.CharField(_("Link"), max_length=255, blank=True)
 
     def __str__(self):
         return self.title
