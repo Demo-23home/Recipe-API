@@ -22,7 +22,7 @@ def detail_url(recipe_id):
     return reverse("recipe:recipe-detail", args=[recipe_id])
 
 
-RECIPE_URL = reverse("recipe:recipe-list")
+RECIPES_URL = reverse("recipe:recipe-list")
 
 
 def create_recipe(user, **params):
@@ -58,7 +58,7 @@ class PublicRecipeAPITests(TestCase):
         Test an authentication required for recipes list.
         """
 
-        res = self.client.get(RECIPE_URL)
+        res = self.client.get(RECIPES_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -85,7 +85,7 @@ class PrivateRecipeAPITests(TestCase):
         create_recipe(user=self.user)
         create_recipe(user=self.user)
 
-        res = self.client.get(RECIPE_URL)
+        res = self.client.get(RECIPES_URL)
 
         recipes = Recipe.objects.all().order_by("-id")
         serializer = RecipeSerializer(recipes, many=True)
@@ -108,7 +108,7 @@ class PrivateRecipeAPITests(TestCase):
         recipes = Recipe.objects.filter(user=self.user)
         serializer = RecipeSerializer(recipes, many=True)
 
-        res = self.client.get(RECIPE_URL)
+        res = self.client.get(RECIPES_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -127,3 +127,24 @@ class PrivateRecipeAPITests(TestCase):
         serializer = RecipeDetailSerializer(recipe)
 
         self.assertEqual(res.data, serializer.data)
+
+
+    def test_create_recipe(self):
+        """
+        Test creating a recipe.
+        """
+
+        payload = {
+            "title": "Test Recipe",
+            "time_minutes": 4,
+            "price": Decimal(5.50)
+        }
+
+        res = self.client.post(RECIPES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe = Recipe.objects.get(id=res.data["id"])
+        for key, value in payload.items():
+            self.assertEqual(getattr(recipe, key), value)
+
+        self.assertEqual(recipe.user, self.user)
