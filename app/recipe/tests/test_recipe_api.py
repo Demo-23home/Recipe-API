@@ -233,7 +233,6 @@ class PrivateRecipeAPITests(TestCase):
 
         self.assertFalse(recipe_exists)
 
-
     def test_delete_other_user_recipe_error(self):
         """
         Test that user can't delete other users recipes.

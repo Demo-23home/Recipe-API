@@ -78,7 +78,7 @@ class ModelTests(TestCase):
             title="Test Recipe",
             time_minutes=5,
             price=Decimal(5.50),
-            description="Simple recipe description"
+            description="Simple recipe description",
         )
 
         self.assertEqual(str(recipe), recipe.title)
