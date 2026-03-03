@@ -106,3 +106,20 @@ class PrivateTagsTests(TestCase):
         tag.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(tag.name, payload["name"])
+
+    def test_delete_tag(self):
+        """
+        Test Deleting a tag.
+        """
+
+        tag = Tag.objects.create(name="break-fast", user=self.user)
+
+        url = detail_url(tag.id)
+
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+        tags = Tag.objects.all()
+
+        self.assertFalse(tags.exists())
