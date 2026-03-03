@@ -10,6 +10,14 @@ from django.contrib.auth import get_user_model
 from core import models
 
 
+def create_user(email="user@example.com", password="TestPassword@123"):
+    """
+    Create a user in the system.
+    """
+    user = get_user_model().objects.create_user(email, password)
+    return user
+
+
 class ModelTests(TestCase):
     """
     Test models.
@@ -22,7 +30,7 @@ class ModelTests(TestCase):
         email = "testEamil@example.com"
         password = "TestPassword@123"
 
-        user = get_user_model().objects.create_user(email=email, password=password)
+        user = create_user(email=email, password=password)
 
         self.assertEqual(user.email, email.lower())
         self.assertTrue(user.check_password(password))
@@ -39,7 +47,7 @@ class ModelTests(TestCase):
         ]
 
         for email, expected in sample_emails:
-            user = get_user_model().objects.create_user(email, "TestPassword@123")
+            user = create_user(email, "TestPassword@123")
 
             self.assertEqual(user.email, expected)
 
@@ -48,7 +56,7 @@ class ModelTests(TestCase):
         Test that creating a user without email raises a Value Error
         """
         with self.assertRaises(ValueError):
-            get_user_model().objects.create_user("", "TestPassword@123")
+            create_user("", "TestPassword@123")
 
     def test_create_superuser(self):
         """
@@ -67,10 +75,9 @@ class ModelTests(TestCase):
         Test create recipe is successful.
         """
 
-        user = get_user_model().objects.create(
+        user = create_user(
             email="testemail@exmaple.com",
             password="TestPassword@123",
-            name="Test Users",
         )
 
         recipe = models.Recipe.objects.create(
