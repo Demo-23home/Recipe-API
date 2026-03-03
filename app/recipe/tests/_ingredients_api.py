@@ -9,9 +9,9 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from .serailizers import IngredientSerializer
+from recipe.serailizers import IngredientSerializer
 
-from .models import Ingredient
+from core.models import Ingredient
 
 
 INGREDIENTS_URL = reverse("recipe:ingredient-list")
