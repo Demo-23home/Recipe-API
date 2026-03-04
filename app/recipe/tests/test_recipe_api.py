@@ -262,7 +262,7 @@ class PrivateRecipeAPITests(TestCase):
             "tags": [{"name": "Thai"}, {"name": "Dinner"}],
         }
 
-        res = self.client.post(RECIPES_URL, payload)
+        res = self.client.post(RECIPES_URL, payload, format="json")
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipes = Recipe.objects.filter(user=self.user)
@@ -271,9 +271,8 @@ class PrivateRecipeAPITests(TestCase):
         recipe = recipes[0]
         self.assertEqual(recipe.tags.count(), 2)
         for tag in payload["tags"]:
-            self.assertTrue(
-                exists=recipe.tags.filter(name=tag["name"], user=self.user).exists()
-            )
+            exists = recipe.tags.filter(name=tag["name"], user=self.user).exists()
+            self.assertTrue(exists)
 
         self.assertEqual(recipe.user, self.user)
 
@@ -301,6 +300,5 @@ class PrivateRecipeAPITests(TestCase):
         self.assertIn(egyptian_tag, recipe.tags.all())
 
         for tag in payload["tags"]:
-            self.assertTrue(
-                exists=recipe.tags.filter(name=tag["name"], user=self.user).exists()
-            )
+            exists = recipe.tags.filter(name=tag["name"], user=self.user).exists()
+            self.assertTrue(exists)
