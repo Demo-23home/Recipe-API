@@ -65,9 +65,9 @@ class TagViewSet(
         return self.queryset.filter(user=self.request.user).order_by("-name")
 
 
-
-
-class IngredientViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+class IngredientViewset(
+    mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     """
     Manage Ingredients in DB.
     """
