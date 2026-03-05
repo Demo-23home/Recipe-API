@@ -86,6 +86,7 @@ class Recipe(models.Model):
     price = models.DecimalField(_("Price"), max_digits=6, decimal_places=2)
     link = models.CharField(_("Link"), max_length=255, blank=True)
     tags = models.ManyToManyField("Tag", verbose_name=_("Tag"))
+    ingredients = models.ManyToManyField("Ingredient", verbose_name=_("Ingredients"))
 
     def __str__(self):
         return self.title
@@ -103,7 +104,6 @@ class Tag(models.Model):
         on_delete=models.CASCADE,
         related_name="tags",
     )
-    ingredients = models.ManyToManyField("Ingredient", verbose_name=_("Ingredients"))
 
     def __str__(self):
         return f"{self.name}"
