@@ -103,6 +103,20 @@ class Tag(models.Model):
         on_delete=models.CASCADE,
         related_name="tags",
     )
+    ingredients = models.ManyToManyField("Ingredient", verbose_name=_("Ingredients"))
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Ingredient(models.Model):
+    name = models.CharField(_("Ingredient Name"), max_length=250)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_("User"),
+        on_delete=models.CASCADE,
+        related_name="ingredients",
+    )
 
     def __str__(self):
         return f"{self.name}"
