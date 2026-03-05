@@ -9,7 +9,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from recipe.serailizers import IngredientSerializer
+from recipe.serializers import IngredientSerializer
 
 from core.models import Ingredient
 
@@ -73,8 +73,8 @@ class PrivateIngredientsAPITests(TestCase):
 
         user2 = create_user(email="test2@example.com")
 
-        ingredient = Ingredient.objects.create(name="pepper", user=user2)
-        Ingredient.objects.create(name="salt", user=self.user)
+        Ingredient.objects.create(name="salt", user=user2)
+        ingredient = Ingredient.objects.create(name="pepper", user=self.user)
 
         res = self.client.get(INGREDIENTS_URL)
 
