@@ -11,7 +11,7 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ["id", "name", "user"]
-        read_only_fields = ["id"]
+        read_only_fields = ["id", "user"]
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -24,15 +24,16 @@ class TagSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     # by default nested serializer are read only.
     tags = TagSerializer(many=True, required=False)
+    ingredients = IngredientSerializer(many=True, required=False)
 
     class Meta:
         model = Recipe
-        fields = ["id", "user", "title", "time_minutes", "price", "tags"]
+        fields = ["id", "user", "title", "time_minutes", "price", "tags", "ingredients"]
         read_only_fields = ["id", "user"]
 
-    def _create_or_update(self, tags, recipe):
+    def _get_or_create_tags(self, tags, recipe):
         """
-        Create or update tags on recipe if needed.
+        get or create tags on recipe if needed.
         """
         auth_user = self.context["request"].user
 
@@ -40,14 +41,28 @@ class RecipeSerializer(serializers.ModelSerializer):
             tag_obj, created = Tag.objects.get_or_create(user=auth_user, **tag)
             recipe.tags.add(tag_obj)
 
+    def _get_or_create_ingredients(self, ingredients, recipe):
+        """
+        Get or create recipe ingredients if needed.
+        """
+        auth_user = self.context["request"].user
+
+        for ingredient in ingredients:
+            ingredient_obj, created = Ingredient.objects.get_or_create(
+                user=auth_user, **ingredient
+            )
+            recipe.ingredients.add(ingredient_obj)
+
     def create(self, validated_data):
         """
         Create the recipe with tags.
         """
         tags = validated_data.pop("tags", [])
+        ingredients = validated_data.pop("ingredients", [])
         recipe = Recipe.objects.create(**validated_data)
 
-        self._create_or_update(tags, recipe)
+        self._get_or_create_tags(tags, recipe)
+        self._get_or_create_ingredients(ingredients, recipe)
 
         return recipe
 
@@ -56,7 +71,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
         if tags is not None:
             instance.tags.clear()
-            self._create_or_update(tags, instance)
+            self._get_or_create_tags(tags, instance)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)

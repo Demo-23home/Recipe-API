@@ -362,12 +362,11 @@ class PrivateRecipeAPITests(TestCase):
         payload = {
             "title": "Test Recipe",
             "time_minutes": 10,
-            "price": Decimal(20.4),
+            "price": Decimal(5.5),
             "ingredients": [{"name": "Test ingredient1"}, {"name": "Test ingredient2"}],
         }
 
         res = self.client.post(RECIPES_URL, payload, format="json")
-
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipes = self.user.recipes.all()
         self.assertEqual(recipes.count(), 1)
@@ -394,11 +393,10 @@ class PrivateRecipeAPITests(TestCase):
         }
 
         res = self.client.post(RECIPES_URL, payload, format="json")
-
         recipes = self.user.recipes.all()
 
-        self.assertEqual(recipes.count(), 1)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(recipes.count(), 1)
 
         ingredients = Ingredient.objects.all()
         self.assertEqual(ingredients.count(), 2)
