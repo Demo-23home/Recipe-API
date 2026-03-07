@@ -72,7 +72,6 @@ class TagViewSet(BaseRecipeAttrViewset):
     queryset = Tag.objects.all()
 
 
-
 class IngredientViewset(BaseRecipeAttrViewset):
     """
     Manage Ingredients in DB.
@@ -80,4 +79,3 @@ class IngredientViewset(BaseRecipeAttrViewset):
 
     serializer_class = serializers.IngredientSerializer
     queryset = Ingredient.objects.all()
-
