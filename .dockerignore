@@ -38,3 +38,4 @@ staticfiles/
 .env
 .env.*
 .envs/
+.env.make

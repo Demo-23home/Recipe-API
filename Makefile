@@ -1,50 +1,108 @@
-# Docker Compose alias
-DC = docker-compose
+# Makefile
+-include .env.make   # optional local override
+
+# Environment type: docker or local
+ENV ?= docker
 APP = app
 
-.PHONY: build up down shell wait_for_db makemigrations migrate lint test superuser start
+ifeq ($(ENV),docker)
+DC = docker-compose
+RUN = $(DC) run --rm $(APP)
+else
+RUN =
+endif
 
+.PHONY: build up down shell django_shell wait_for_db makemigrations migrate lint test superuser start
+
+# -----------------------------
+# Docker-specific commands
+# -----------------------------
 build:
+ifeq ($(ENV),docker)
 	$(DC) build
+else
+	@echo "Build not needed in local mode"
+endif
 
 up:
+ifeq ($(ENV),docker)
 	$(DC) up
+else
+	cd app && python manage.py runserver
+endif
 
 down:
+ifeq ($(ENV),docker)
 	$(DC) down
-
-down-v:
-	$(DC) down -v
+else
+	@echo "Nothing to stop"
+endif
 
 shell:
-	$(DC) run --rm $(APP) sh
+ifeq ($(ENV),docker)
+	$(RUN) sh
+else
+	cd app && bash
+endif
 
+# -----------------------------
+# Django commands (run inside app/)
+# -----------------------------
 django_shell:
-	$(DC) run --rm $(APP) python manage.py shell_plus
+ifeq ($(ENV),docker)
+	$(RUN) python manage.py shell_plus
+else
+	cd app && python manage.py shell_plus
+endif
 
 wait_for_db:
-	$(DC) run --rm $(APP) python manage.py wait_for_db
+ifeq ($(ENV),docker)
+	$(RUN) python manage.py wait_for_db
+else
+	cd app && python manage.py wait_for_db
+endif
 
 makemigrations:
-	$(DC) run --rm $(APP) python manage.py makemigrations
+ifeq ($(ENV),docker)
+	$(RUN) python manage.py makemigrations
+else
+	cd app && python manage.py makemigrations
+endif
 
 migrate:
-	$(DC) run --rm $(APP) python manage.py migrate
+ifeq ($(ENV),docker)
+	$(RUN) python manage.py migrate
+else
+	cd app && python manage.py migrate
+endif
 
 lint:
-	$(DC) run --rm $(APP) flake8
+ifeq ($(ENV),docker)
+	$(RUN) flake8
+else
+	cd app && flake8
+endif
 
 test:
-	$(DC) run --rm $(APP) python manage.py test
+ifeq ($(ENV),docker)
+	$(RUN) python manage.py test
+else
+	cd app && python manage.py test
+endif
 
 superuser:
-	$(DC) run --rm $(APP) python manage.py createsuperuser
+ifeq ($(ENV),docker)
+	$(RUN) python manage.py createsuperuser
+else
+	cd app && python manage.py createsuperuser
+endif
 
-rebuild:
-	$(DC) down
-	$(DC) build --no-cache
-	$(DC) up -d
-
-
-start: up wait_for_db migrate lint test
-
+# -----------------------------
+# Convenience command to run all
+# -----------------------------
+start:
+	make up ENV=$(ENV)
+	make wait_for_db ENV=$(ENV)
+	make migrate ENV=$(ENV)
+	make lint ENV=$(ENV)
+	make test ENV=$(ENV)
