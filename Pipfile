@@ -3,8 +3,15 @@ djangorestframework = "<4.0,>=3.15"
 psycopg2-binary = ">=2.9,<3.0"
 django-jazzmin = "<4.0,>=3.0"
 django = "<6.0,>=5.0"
-python-dotenv = "<2.0,>=1.0"
+python-dotenv = "==1.2.2"
 psycopg = {extras = ["binary"], version = "<4.0,>=3.1"}
+flake8 = "<7.0,>=6.0"
+django-extensions = ">=3.2"
+black = ">=24.0"
+ipython = ">=8.0"
+bpython = ">=0.25"
+werkzeug = ">=3.0"
+drf-spectacular = "==0.29.0"
 
 [dev-packages]
 django-extensions = ">=4.1,<5.0"
