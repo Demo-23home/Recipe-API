@@ -106,9 +106,17 @@ USE_L10N = True
 USE_TZ = True
 
 # -------------------------------------------------
-# Static files
+# Static and media files
 # -------------------------------------------------
-STATIC_URL = "/static/"
+STATIC_URL = "/static/static/"
+MEDIA_URL = "/static/media/"
+
+STATIC_ROOT = "/vol/web/static"
+MEDIA_ROOT = "/vol/web/media"
+
+# -------------------------------------------------
+# Django models configuration
+# -------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "core.user"
 
