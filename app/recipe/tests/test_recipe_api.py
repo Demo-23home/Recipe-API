@@ -493,7 +493,9 @@ class PrivateRecipeAPITests(TestCase):
 
         in1 = Ingredient.objects.create(user=self.user, name="in1")
         in2 = Ingredient.objects.create(user=self.user, name="in2")
-        in3 = Ingredient.objects.create(user=self.user, name="in3")
+        
+        r1.ingredients.add(in1)
+        r2.ingredients.add(in2)
 
         params = {"ingredients": f"{in1.id},{in2.id}"}
         res = self.client.get(RECIPES_URL, params)
