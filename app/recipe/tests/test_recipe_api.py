@@ -493,7 +493,7 @@ class PrivateRecipeAPITests(TestCase):
 
         in1 = Ingredient.objects.create(user=self.user, name="in1")
         in2 = Ingredient.objects.create(user=self.user, name="in2")
-        
+
         r1.ingredients.add(in1)
         r2.ingredients.add(in2)
 
