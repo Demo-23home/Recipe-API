@@ -2,6 +2,9 @@
 Database models.
 """
 
+import uuid
+import os
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import (
@@ -10,6 +13,18 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.conf import settings
+
+
+def recipe_image_file_path(instance, filename):
+    """
+    Generate file path for new recipe image.
+    """
+    ext = os.path.splitext(filename)[1]
+    filename = f"{uuid.uuid4()}{ext}"
+
+    # ensures that the string is created
+    #  in the approriate format for OS
+    return os.path.join("uploads", "recipe", filename)
 
 
 class UserManager(BaseUserManager):
@@ -87,6 +102,10 @@ class Recipe(models.Model):
     link = models.CharField(_("Link"), max_length=255, blank=True)
     tags = models.ManyToManyField("Tag", verbose_name=_("Tag"))
     ingredients = models.ManyToManyField("Ingredient", verbose_name=_("Ingredients"))
+    image = models.ImageField(
+        _("Image"),
+        upload_to=recipe_image_file_path,
+    )
 
     def __str__(self):
         return self.title
