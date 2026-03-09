@@ -1,6 +1,7 @@
 """
 Tests for models.
 """
+
 from unittest.mock import patch
 from decimal import Decimal
 
@@ -110,11 +111,10 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(ingredient), ingredient.name)
 
-
     @patch("core.models.uuid.uuid4")
     def test_recipe_file_name_uuid(self, mock_uuid):
         """
-        Test generating iamge path. 
+        Test generating iamge path.
         """
         uuid = "test-uuid"
         mock_uuid.return_value = uuid

@@ -118,9 +118,14 @@ MEDIA_ROOT = "/vol/web/media"
 # Django models configuration
 # -------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 AUTH_USER_MODEL = "core.user"
 
 # -------------------------------------------------
 # REST framework
 # -------------------------------------------------
 REST_FRAMEWORK = {"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"}
+
+SPECTACULAR_SETTINGS = {
+    "COMPONENT_SPLIT_REQUEST": True,
+}
