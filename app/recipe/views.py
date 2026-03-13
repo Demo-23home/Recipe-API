@@ -73,6 +73,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
             .distinct()
         )
 
+    def create(self, request, *args, **kwargs):
+        """
+        Override the create method,
+        to handle the creation of a list of objects.
+        """
+        is_many = isinstance(request.data, list)
+
+        # Use get_serializer, not get_serializer_class
+        serializer = self.get_serializer(data=request.data, many=is_many)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
     def get_serializer_class(self):
         """
         Return serializer based on the request.
@@ -104,13 +120,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @extend_schema_view(
     list=extend_schema(
         parameters=[
             OpenApiParameter(
-                "assigned_only", 
-                OpenApiTypes.INT, enum=[0,1],
-                description="Filter bt items assigned to recipes."
+                "assigned_only",
+                OpenApiTypes.INT,
+                enum=[0, 1],
+                description="Filter bt items assigned to recipes.",
             )
         ]
     )

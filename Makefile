@@ -38,6 +38,13 @@ else
 	@echo "Nothing to stop"
 endif
 
+down-v:
+ifeq ($(ENV),docker)
+	$(DC) down -v
+else
+	@echo "Nothing to stop"
+endif
+
 shell:
 ifeq ($(ENV),docker)
 	$(RUN) sh

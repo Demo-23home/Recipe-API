@@ -1,6 +1,7 @@
 """
 Tests for tags api.
 """
+
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
@@ -124,51 +125,42 @@ class PrivateTagsTests(TestCase):
         tags = Tag.objects.all()
 
         self.assertFalse(tags.exists())
-        
-        
-    def test_filter_tags_assigned_to_recipes(self): 
+
+    def test_filter_tags_assigned_to_recipes(self):
         """
-        Test filter tags only those assigned to recipes. 
+        Test filter tags only those assigned to recipes.
         """
         tag1 = Tag.objects.create(user=self.user, name="tag1")
         tag2 = Tag.objects.create(user=self.user, name="tag2")
-        
+
         recipe = Recipe.objects.create(
-            user=self.user, 
-            title="recipe1", 
-            time_minutes=3, 
-            price=Decimal(5.3)
+            user=self.user, title="recipe1", time_minutes=3, price=Decimal(5.3)
         )
-        
+
         recipe.tags.add(tag1)
 
         s1 = TagSerializer(tag1)
         s2 = TagSerializer(tag2)
-        
+
         res = self.client.get(TAGS_URL, {"assigned_only": 1})
-        
+
         self.assertIn(s1.data, res.data)
         self.assertNotIn(s2.data, res.data)
-        
-        
-    def test_filter_tags_unique(self): 
+
+    def test_filter_tags_unique(self):
         """
-        Test filter tags returns a unique list. 
+        Test filter tags returns a unique list.
         """
-        
+
         tag1 = Tag.objects.create(user=self.user, name="tag1")
-        Tag.objects.create(user=self.user, name='tag2')
-        
+        Tag.objects.create(user=self.user, name="tag2")
+
         recipe = Recipe.objects.create(
-            user=self.user, 
-            title="recipe", 
-            time_minutes=2, 
-            price=Decimal(5.30)
+            user=self.user, title="recipe", time_minutes=2, price=Decimal(5.30)
         )
-        
+
         recipe.tags.add(tag1)
-        
+
         res = self.client.get(TAGS_URL, {"assigned_only": 1})
-        
+
         self.assertEqual(len(res.data), 1)
-        
