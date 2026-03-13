@@ -143,8 +143,8 @@ class PrivateIngredientsAPITests(TestCase):
         s1 = IngredientSerializer(in1)
         s2 = IngredientSerializer(in2)
 
-        self.assertIn(res.data, s1)
-        self.assertNotIn(res.data, s2)
+        self.assertIn(s1.data, res.data)
+        self.assertNotIn(s2.data, res.data)
 
     def test_filter_ingredients_unique(self):
         """
