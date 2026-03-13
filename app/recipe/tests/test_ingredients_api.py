@@ -2,6 +2,7 @@
 Tests for Ingredients API.
 """
 
+from decimal import Decimal
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import TestCase
@@ -11,7 +12,7 @@ from rest_framework.test import APIClient
 
 from recipe.serializers import IngredientSerializer
 
-from core.models import Ingredient
+from core.models import Ingredient, Recipe
 
 INGREDIENTS_URL = reverse("recipe:ingredient-list")
 
@@ -123,3 +124,39 @@ class PrivateIngredientsAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         ingredients = Ingredient.objects.all().exists()
         self.assertFalse(ingredients)
+
+    def test_filter_ingredients_assigned_to_recipe(self):
+        """
+        Test listing ingredients by those assigned to recipes.
+        """
+        in1 = Ingredient.objects.create(user=self.user, name="ing1")
+        in2 = Ingredient.objects.create(user=self.user, name="in2")
+
+        recipe = Recipe.objects.create(
+            user=self.user, title="recipe1", price=Decimal(5.5), time_minutes=3
+        )
+
+        recipe.ingredients.add(in1)
+
+        res = self.client.get(INGREDIENTS_URL, {"assigned_only": 1})
+
+        s1 = IngredientSerializer(in1)
+        s2 = IngredientSerializer(in2)
+
+        self.assertIn(res.data, s1)
+        self.assertNotIn(res.data, s2)
+
+    def test_filter_ingredients_unique(self):
+        """
+        Test filtering ingredients returns a unique list.
+        """
+        in1 = Ingredient.objects.create(user=self.user, name="in1")
+        Ingredient.objects.create(user=self.user, name="in2")
+        recipe = Recipe.objects.create(
+            user=self.user, title="recipe1", time_minutes=4, price=Decimal(29.5)
+        )
+
+        recipe.ingredients.add(in1)
+        res = self.client.get(INGREDIENTS_URL, {"assigned_only": 1})
+
+        self.assertEqual(len(res.data), 1)
