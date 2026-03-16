@@ -1,5 +1,6 @@
 from pathlib import Path
 from os import getenv
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # -------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -73,16 +75,21 @@ WSGI_APPLICATION = "app.wsgi.application"
 # -------------------------------------------------
 # Database
 # -------------------------------------------------
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": getenv("POSTGRES_DB"),
-        "HOST": getenv("POSTGRES_HOST"),
-        "USER": getenv("POSTGRES_USER"),
-        "PASSWORD": getenv("POSTGRES_PASSWORD"),
-        "PORT": 5432,
+DATABASE_URL = getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": getenv("POSTGRES_DB"),
+            "HOST": getenv("POSTGRES_HOST"),
+            "USER": getenv("POSTGRES_USER"),
+            "PASSWORD": getenv("POSTGRES_PASSWORD"),
+            "PORT": 5432,
+        }
     }
-}
 
 # -------------------------------------------------
 # Password validation
@@ -108,11 +115,11 @@ USE_TZ = True
 # -------------------------------------------------
 # Static and media files
 # -------------------------------------------------
-STATIC_URL = "/static/static/"
-MEDIA_URL = "/static/media/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 
-STATIC_ROOT = "/vol/web/static"
-MEDIA_ROOT = "/vol/web/media"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # -------------------------------------------------
 # Django models configuration
