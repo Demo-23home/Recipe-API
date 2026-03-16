@@ -43,8 +43,5 @@ RUN python -m venv /py && \
 # Add venv to PATH
 ENV PATH="/py/bin:$PATH"
 
-# Switch to non-root user
-USER django-user
-
 
 CMD gunicorn app.wsgi:application --bind 0.0.0.0:$PORT
