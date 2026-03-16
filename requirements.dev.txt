@@ -1,7 +1,0 @@
-flake8>=6.0,<7.0
-django-extensions>=3.2
-black>=24.0
-ipython>=8.0
-bpython>=0.25
-Werkzeug>=3.0
-python-dotenv==1.2.2
