@@ -47,4 +47,4 @@ ENV PATH="/py/bin:$PATH"
 USER django-user
 
 
-
+CMD gunicorn app.wsgi:application --bind 0.0.0.0:$PORT
