@@ -13,6 +13,7 @@ bpython = ">=0.25"
 werkzeug = ">=3.0"
 drf-spectacular = "==0.29.0"
 pillow = "*"
+uwsgi = "*"
 
 [dev-packages]
 django-extensions = ">=4.1,<5.0"
