@@ -111,14 +111,13 @@ USE_TZ = True
 # Static and media files
 # -------------------------------------------------
 # STATIC
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-MEDIA_ROOT = BASE_DIR / "mediafiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # MEDIA
 MEDIA_URL = "/media/"
-MEDIA_ROOT = "/vercel/output/media"
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 # -------------------------------------------------
 # Django models configuration
 # -------------------------------------------------
