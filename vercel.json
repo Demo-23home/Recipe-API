@@ -2,14 +2,13 @@
   "builds": [
     {
       "src": "app/asgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "app/asgi.py" }
-  ],
-  "buildCommand": "python3 manage.py collectstatic --noinput"
+    {
+      "src": "/(.*)",
+      "dest": "app/asgi.py"
+    }
+  ]
 }
