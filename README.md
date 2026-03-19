@@ -140,7 +140,7 @@ Generated using `drf-spectacular`.
 
 Live deployment link:  
 
-[https://recipe-i66iqdgx4-zeyad-salamas-projects.vercel.app/](https://recipe-i66iqdgx4-zeyad-salamas-projects.vercel.app/)
+[https://recipe-api-git-prod-zeyad-salamas-projects.vercel.app/)
 
 ---
 
