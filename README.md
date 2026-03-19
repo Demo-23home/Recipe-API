@@ -30,6 +30,7 @@ The project follows clean architecture principles and is structured for scalabil
 - **Swagger / OpenAPI (drf-spectacular)**
 - **GitHub Actions (CI Pipeline)**
 - **Flake8 (Linting)**
+- **Vercel (Deployment)**
 
 ---
 
@@ -108,6 +109,10 @@ app/
 
 ## 📖 API Documentation
 
+Postman Documentation:
+
+[https://documenter.getpostman.com/view/29368996/2sBXihrDKh](https://documenter.getpostman.com/view/29368996/2sBXihrDKh)
+
 Swagger UI:
 
 ```
@@ -129,6 +134,13 @@ OpenAPI schema:
 
 Generated using `drf-spectacular`.
 
+---
+
+## 🌐 Deployment
+
+Live deployment link:  
+
+[https://recipe-i66iqdgx4-zeyad-salamas-projects.vercel.app/](https://recipe-i66iqdgx4-zeyad-salamas-projects.vercel.app/)
 
 ---
 
