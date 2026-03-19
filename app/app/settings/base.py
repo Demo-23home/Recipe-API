@@ -8,8 +8,13 @@ if not SECRET_KEY:
     raise ValueError("SECRET_KEY is not set in environment variables")
 
 DEBUG = False  # override in dev
-ALLOWED_HOSTS = getenv("ALLOWED_HOSTS", "").split(",")
 
+hosts = getenv("ALLOWED_HOSTS")
+
+if hosts:
+    ALLOWED_HOSTS = hosts.split(",")
+else:
+    ALLOWED_HOSTS = ["*"]
 # -------------------------------------------------
 # Apps
 # -------------------------------------------------
@@ -75,12 +80,8 @@ WSGI_APPLICATION = "app.wsgi.application"
 # -------------------------------------------------
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": getenv("POSTGRES_DB"),
-        "HOST": getenv("POSTGRES_HOST"),
-        "USER": getenv("POSTGRES_USER"),
-        "PASSWORD": getenv("POSTGRES_PASSWORD"),
-        "PORT": 5432,
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "/tmp/db.sqlite3",
     }
 }
 
@@ -108,12 +109,11 @@ USE_TZ = True
 # -------------------------------------------------
 # Static and media files
 # -------------------------------------------------
-STATIC_URL = "/static/static/"
-MEDIA_URL = "/static/media/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 
-STATIC_ROOT = "/vol/web/static"
-MEDIA_ROOT = "/vol/web/media"
-
+STATIC_ROOT = "/tmp/static"
+MEDIA_ROOT = "/tmp/media"
 # -------------------------------------------------
 # Django models configuration
 # -------------------------------------------------
