@@ -287,5 +287,5 @@ This project demonstrates:
 
 ## 👨‍💻 Author
 
-**Zeyad**  
+**Zeyad**
 Backend Developer | Python & Django
