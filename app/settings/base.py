@@ -111,8 +111,8 @@ USE_TZ = True
 # Static and media files
 # -------------------------------------------------
 # STATIC
-STATIC_URL = "/static/"
-STATIC_ROOT = "/vercel/output/static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 # MEDIA
 MEDIA_URL = "/media/"
